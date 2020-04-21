@@ -1,18 +1,18 @@
 {% block body %}
 	<div class="container">
-		<h1>My Todo List</h1>
-
-
+		<h1>{{"now"|date("d/m/Y")}}</h1>
+		<h4>Vous avez
+			<u>{{ tasks|length }}</u>
+			tâche(s)</h4>
 		{% for task in tasks %}
-
-			<div>
+			<div class="border p-1">
+				-
 				{{task.description}}</div>
 
 		{% else %}
-			<div>
-				no record found</div>
+			<div>Vous avez aucune tâche pour aujourdh'ui</div>
 		{% endfor %}
 
-		<a href="{{ path('task_new') }}">Create new</a>
+		<a href="{{ path('task_new') }}">Créer un nouveau</a>
 	</div>
 {% endblock %}
