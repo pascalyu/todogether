@@ -1,0 +1,18 @@
+{% block body %}
+	<div class="container">
+		<h1>My Todo List</h1>
+
+
+		{% for task in tasks %}
+
+			<div>
+				{{task.description}}</div>
+
+		{% else %}
+			<div>
+				no record found</div>
+		{% endfor %}
+
+		<a href="{{ path('task_new') }}">Create new</a>
+	</div>
+{% endblock %}
