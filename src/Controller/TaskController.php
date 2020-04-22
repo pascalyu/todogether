@@ -23,7 +23,7 @@ class TaskController extends AbstractController
     public function index(Request $request, TaskRepository $taskRepository): Response
     {
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findBy(['user' => $this->getUser()]),
+            'tasks' => $taskRepository->findBy(['user' => $this->getUser(), "done" => false]),
         ]);
     }
 
@@ -88,10 +88,24 @@ class TaskController extends AbstractController
      */
     public function delete(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
-        $entityManager->remove($task);
-        $entityManager->flush();
+
         if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($task);
+            $entityManager->flush();
         }
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/{id}/done", name="task_done", methods={"POST"})
+     */
+    public function done(Request $request, Task $task, EntityManagerInterface $entityManager): Response
+    {
+        $task->setDone(true);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
 
         return $this->redirectToRoute('home');
     }
