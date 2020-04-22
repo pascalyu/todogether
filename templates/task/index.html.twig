@@ -12,7 +12,9 @@
 			<div>
 				no record found</div>
 		{% endfor %}
+		{{ render(controller(
+        'App\\Controller\\TaskController::new'
+    )) }}
 
-		<a href="{{ path('task_new') }}">Create new</a>
 	</div>
 {% endblock %}

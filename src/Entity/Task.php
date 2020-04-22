@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -14,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Task
 {
 
-   
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,7 +31,7 @@ class Task
     /**
      * @ORM\Column(type="boolean")
      */
-    private $done;
+    private $done = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -51,6 +52,12 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
      */
     private $user;
+
+    public function __construct()
+    {
+       $this->createdAt = new DateTime();
+       $this->updatedAt = new DateTime();
+    }
 
     public function getId(): ?int
     {

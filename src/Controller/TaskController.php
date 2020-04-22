@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Form\TaskNewType;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,9 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     /**
-     * @Route("/", name="task_index", methods={"GET"})
+     * @Route("/", name="task_index", methods={"GET","POST"})
      */
-    public function index(TaskRepository $taskRepository): Response
+    public function index(Request $request, TaskRepository $taskRepository): Response
     {
         return $this->render('task/index.html.twig', [
             'tasks' => $taskRepository->findBy(['user' => $this->getUser()]),
@@ -32,15 +33,18 @@ class TaskController extends AbstractController
     public function new(Request $request): Response
     {
         $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
+        $form = $this->createForm(TaskNewType::class, $task, ['action' => $this->generateUrl('task_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
+
+            $task->setUser($this->getUser());
             $entityManager->persist($task);
             $entityManager->flush();
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('task/new.html.twig', [
