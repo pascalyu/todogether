@@ -12,7 +12,10 @@
 		{% else %}
 			<div>Vous avez aucune tâche pour aujourdh'ui</div>
 		{% endfor %}
+		{{ render(controller(
+        'App\\Controller\\TaskController::new'
+    )) }}
 
-		<a href="{{ path('task_new') }}">Créer un nouveau</a>
+
 	</div>
 {% endblock %}
