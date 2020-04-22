@@ -20,5 +20,20 @@
     )) }}
 
 
+		<a href="{{ path('task_new') }}">Create new</a>
+
+		{% for donetask in donetasks %}
+
+			<div>
+				{{donetask.description}}</div>
+			<div>
+				{{ include('task/_undo_form.html.twig') }}</div>
+
+		{% else %}
+			<div>
+				no record found</div>
+		{% endfor %}
+
+
 	</div>
 {% endblock %}
