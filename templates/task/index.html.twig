@@ -5,12 +5,18 @@
 			<u>{{ tasks|length }}</u>
 			tâche(s)</h4>
 		{% for task in tasks %}
-			<div class="border p-1">
-				-
-				{{task.description}}</div>
-			 <div>
-                {{ include('task/_done_form.html.twig') }}
-                {{ include('task/_delete_form.html.twig') }}</div>
+			<div class="row border p-1 mb-2 border-dark rounded">
+				<h5 class="col-md-8 ">
+					{{task.description}}</h5>
+
+				<div class="col-md-2">
+					{{ include('task/_done_form.html.twig') }}
+				</div>
+				<div class="col-md-2">
+					{{ include('task/_delete_form.html.twig') }}
+				</div>
+
+			</div>
 
 		{% else %}
 			<div>Vous avez aucune tâche pour aujourdh'ui</div>
@@ -18,16 +24,23 @@
 		{{ render(controller(
         'App\\Controller\\TaskController::new'
     )) }}
+		<hr/>
 
-
-		<a href="{{ path('task_new') }}">Create new</a>
-
+		<h4>Vous avez
+					accomplis
+			<u>{{ donetasks|length }}</u>
+			tâche(s) </h4>
 		{% for donetask in donetasks %}
 
-			<div>
-				{{donetask.description}}</div>
-			<div>
+			<div class="row border p-1 mb-2 border-dark rounded">
+				<h5 class="col-md-8 ">
+					{{donetask.description}}</h5>
+
+				<div class="col-md-2">
 				{{ include('task/_undo_form.html.twig') }}</div>
+		
+
+			</div>
 
 		{% else %}
 			<div>
