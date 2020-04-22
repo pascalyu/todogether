@@ -93,6 +93,6 @@ class TaskController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
         }
 
-        return $this->redirectToRoute('task_index');
+        return $this->redirectToRoute('home');
     }
 }

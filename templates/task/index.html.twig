@@ -8,6 +8,7 @@
 			<div class="border p-1">
 				-
 				{{task.description}}</div>
+			{{ include('task/_delete_form.html.twig') }}
 
 		{% else %}
 			<div>Vous avez aucune tâche pour aujourdh'ui</div>
