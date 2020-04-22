@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +22,11 @@ class TaskController extends AbstractController
      */
     public function index(TaskRepository $taskRepository): Response
     {
+
+
         return $this->render('task/index.html.twig', [
             'tasks' => $taskRepository->findBy(['user' => $this->getUser()]),
+            'donetasks' => $taskRepository->findBy(['user' => $this->getUser(), 'done' => true]),
         ]);
     }
 
@@ -90,5 +94,20 @@ class TaskController extends AbstractController
         }
 
         return $this->redirectToRoute('task_index');
+    }
+
+    /**
+     * @Route("/{id}/undo", name="task_undo", methods={"POST"})
+     */
+    public function taskundo(Request $request, Task $task, EntityManagerInterface $entityManager): Response
+    {
+
+        $task->setDone(false);
+
+        $task->setUpdatedAt(new DateTime());
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
     }
 }
