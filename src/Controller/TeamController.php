@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +50,33 @@ class TeamController extends AbstractController
     }
 
     /**
+     * @Route("/create", name="team_create", methods={"GET","POST"})
+     */
+    public function create(Request $request): Response
+    {
+        $team = new Team();
+        $form = $this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $team->addUser($this->getUser());
+            $team->setCode($this->getUser()->getId() . (new DateTime())->format("d"));
+            $entityManager->persist($team);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('team_index');
+        }
+
+        return $this->render('team/create.html.twig', [
+            'team' => $team,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
      * @Route("/{id}", name="team_show", methods={"GET"})
      */
     public function show(Team $team): Response
@@ -83,7 +111,7 @@ class TeamController extends AbstractController
      */
     public function delete(Request $request, Team $team): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $team->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($team);
             $entityManager->flush();

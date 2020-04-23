@@ -11,7 +11,10 @@ class HomeController extends AbstractController
      * @Route("/", name="home")
      */
     public function index()
-    {   
+    {
+        if ($this->getUser()->getTeam() === NULL) {
+            return $this->redirectToRoute("team_create");
+        }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
