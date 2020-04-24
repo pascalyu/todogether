@@ -26,8 +26,8 @@ class TaskController extends AbstractController
 
 
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findBy(['user' => $this->getUser(), "done" => false]),
-            'donetasks' => $taskRepository->findBy(['user' => $this->getUser(), 'done' => true]),
+            'tasks' => $taskRepository->findBy(['team' => $this->getUser()->getTeam(), "done" => false]),
+            'donetasks' => $taskRepository->findBy(['team' => $this->getUser()->getTeam(), 'done' => true]),
         ]);
     }
 
@@ -45,6 +45,7 @@ class TaskController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $task->setUser($this->getUser());
+            $task->setTeam($this->getUser()->getTeam());
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -72,7 +73,7 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, Task $task): Response
     {
-        $form = $this->createForm(TaskType::class, $task);
+        $form = $this->createForm(TaskNewType::class, $task);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -94,6 +95,7 @@ class TaskController extends AbstractController
     {
 
         if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
+            $task->setUpdatedAt(new DateTime());
             $entityManager->remove($task);
             $entityManager->flush();
         }
@@ -107,6 +109,7 @@ class TaskController extends AbstractController
     public function done(Request $request, Task $task, EntityManagerInterface $entityManager): Response
     {
         $task->setDone(true);
+        $task->setUpdatedAt(new DateTime());
         $entityManager->persist($task);
         $entityManager->flush();
 

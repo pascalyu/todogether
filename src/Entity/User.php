@@ -43,6 +43,11 @@ class User implements UserInterface
      */
     private $tasks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Team", inversedBy="user")
+     */
+    private $team;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -153,6 +158,18 @@ class User implements UserInterface
                 $task->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
 
         return $this;
     }

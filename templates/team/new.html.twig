@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Team{% endblock %}
+
+{% block body %}
+    <h1>Créer une équipe</h1>
+
+    {{ include('team/_form.html.twig', {'button_label': 'Créer l équipe'}) }}
+
+{% endblock %}

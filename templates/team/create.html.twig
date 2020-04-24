@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Team
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Créer une équipe</h1>
+		<a href="{{path('team_join')}}">Ou rejoindre une équipe existante</a>
+		{{ include('team/_form.html.twig', {'button_label': "Créer l'équipe"}) }}
+	</div>
+
+{% endblock %}
