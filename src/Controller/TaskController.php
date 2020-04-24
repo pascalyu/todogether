@@ -23,11 +23,11 @@ class TaskController extends AbstractController
      */
     public function index(Request $request, TaskRepository $taskRepository): Response
     {
-        
+
 
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findBy(['user' => $this->getUser(), "done" => false]),
-            'donetasks' => $taskRepository->findBy(['user' => $this->getUser(), 'done' => true]),
+            'tasks' => $taskRepository->findBy(['team' => $this->getUser()->getTeam(), "done" => false]),
+            'donetasks' => $taskRepository->findBy(['team' => $this->getUser()->getTeam(), 'done' => true]),
         ]);
     }
 
@@ -45,6 +45,7 @@ class TaskController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $task->setUser($this->getUser());
+            $task->setTeam($this->getUser()->getTeam());
             $entityManager->persist($task);
             $entityManager->flush();
 

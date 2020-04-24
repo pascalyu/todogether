@@ -1,23 +1,30 @@
 {% block body %}
 	<div class="container">
-		<h1>{{"now"|date("d/m/Y")}}</h1>
+		<div style="text-align:center">
+			<h1>{{app.user.team.name}}</h1>
+            <div>Ajouter un membre en lui envoyant  ce code <span class="p-1" style="border-style:dashed">{{app.user.team.code}}</span></div>
+		</div>
+		<h5>{{"now"|date("d/m/Y")}}</h5>
 		<a href="#">
 			accéder à tous vos tâche
-            </a>
-		<h4>Vous avez
+		</a>
+		<h6>Vous avez
 			<u>{{ tasks|length }}</u>
-			tâche(s)</h4>
+			tâche(s)</h6>
 		{% for task in tasks %}
 			{% if (task.createdAt|date("d/m/Y")) == ("now"|date("d/m/Y")) %}
 				<div class="row border p-1 mb-2 border-dark rounded">
-					<h5 class="col-md-8 ">
+					<h5 class="col-md-7 ">
 						{{task.description}}</h5>
 
-					<div class="col-md-2">
+					<div class="col-md-1">
 						{{ include('task/_done_form.html.twig') }}
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-1">
 						{{ include('task/_delete_form.html.twig') }}
+					</div>
+                    <div class="col-md-2">
+						{{ task.user.email}}
 					</div>
 
 				</div>
@@ -30,17 +37,17 @@
     )) }}
 		<hr/>
 
-		<h4>Vous avez accomplis
+		<h6>Vous avez accomplis
 			<u>{{ donetasks|length }}</u>
 			tâche(s)
-		</h4>
+		</h6>
 		{% for donetask in donetasks %}
 			{% if (donetask.createdAt|date("d/m/Y")) == ("now"|date("d/m/Y")) %}
 				<div class="row border p-1 mb-2 border-dark rounded">
 					<h5 class="col-md-8 ">
 						{{donetask.description}}</h5>
 
-					<div class="col-md-2">
+					<div class="col-md-1">
 						{{ include('task/_undo_form.html.twig') }}</div>
 
 
