@@ -1,9 +1,7 @@
 {% block body %}
 	<div class="container">
 		<h1>{{"now"|date("d/m/Y")}}</h1>
-		<h4>Vous avez
-			<u>{{ tasks|length }}</u>
-			tâche(s)</h4>
+
 		{% for task in tasks %}
 			<div class="row border p-1 mb-2 border-dark rounded">
 				<h5 class="col-md-8 ">
@@ -21,15 +19,14 @@
 		{% else %}
 			<div>Vous avez aucune tâche pour aujourdh'ui</div>
 		{% endfor %}
-		{{ render(controller(
+		<div class="border p-1">
+			{{ render(controller(
         'App\\Controller\\TaskController::new'
     )) }}
+		</div>
 		<hr/>
 
-		<h4>Vous avez
-					accomplis
-			<u>{{ donetasks|length }}</u>
-			tâche(s) </h4>
+
 		{% for donetask in donetasks %}
 
 			<div class="row border p-1 mb-2 border-dark rounded">
@@ -37,14 +34,13 @@
 					{{donetask.description}}</h5>
 
 				<div class="col-md-2">
-				{{ include('task/_undo_form.html.twig') }}</div>
-		
+					{{ include('task/_undo_form.html.twig') }}</div>
+
 
 			</div>
 
 		{% else %}
-			<div>
-				no record found</div>
+			<div style="color:red">Vous avez accompli aucune tâche , vous êtes nuls</div>
 		{% endfor %}
 
 
