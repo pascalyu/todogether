@@ -6,7 +6,7 @@
 {% block body %}
 	<div class="container">
 		<h1>Créer une équipe</h1>
-		<a href="#">Ou rejoindre une équipe existante</a>
+		<a href="{{path('team_join')}}">Ou rejoindre une équipe existante</a>
 		{{ include('team/_form.html.twig', {'button_label': "Créer l'équipe"}) }}
 	</div>
 

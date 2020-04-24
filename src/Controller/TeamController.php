@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Form\JoinTeamType;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
 use DateTime;
@@ -71,6 +72,30 @@ class TeamController extends AbstractController
 
         return $this->render('team/create.html.twig', [
             'team' => $team,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/join", name="team_join", methods={"GET","POST"})
+     */
+    public function join(Request $request, TeamRepository $teamRepository): Response
+    {
+
+        $form = $this->createForm(JoinTeamType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $team = $teamRepository->findOneBy(["code" => $form->getData()["code"]]);
+            $team->addUser($this->getUser());
+            $entityManager->persist($team);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('team_index');
+        }
+
+        return $this->render('team/join.html.twig', [
             'form' => $form->createView(),
         ]);
     }
