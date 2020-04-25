@@ -15,7 +15,7 @@ Web app fait en **trois jours** : todolist pour un groupe de personnes. me conta
 * mise en place environnement
 * mise en place entité/Table
 * crud des entités
-* user
+* user =>inscription/connexion
 ## jour 2
 * affichage tâches
 * affichage tâche complété
